@@ -24,6 +24,21 @@ class User extends Authenticatable
         'profile_image',
     ];
 
+    public function clients()
+    {
+        return $this->hasMany(Client::class);
+    }
+
+    public function processes()
+    {
+        return $this->hasMany(Process::class);
+    }
+
+    public function deadlines()
+    {
+        return $this->hasMany(Deadline::class);
+    }
+
     protected $hidden = [
         'password',
         'remember_token',

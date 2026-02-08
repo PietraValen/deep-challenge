@@ -1,123 +1,114 @@
-# 🚀 Modern Laravel SaaS Frontend
+# Painel Jurídico (Legal Dashboard)
 
-Bem-vindo ao repositório do projeto **Deep Challenge Frontend**. Este projeto é uma aplicação Laravel reestilizada com um visual moderno, limpo e profissional utilizando **Bootstrap 5** e componentes Blade personalizados.
+O Painel Jurídico é uma aplicação moderna e robusta para gerenciamento de escritórios de advocacia, permitindo o controle de clientes, processos e prazos de forma eficiente. Construído com Laravel, este sistema segue uma arquitetura em camadas limpa e utiliza componentes modernos para uma excelente experiência do usuário.
 
-## ✨ Funcionalidades Principais
+## 🚀 Funcionalidades Principais
 
-*   **Design Moderno & Responsivo**: Layout limpo estilo "SaaS" com tipografia Inter, sombras suaves e bordas arredondadas.
-*   **Autenticação Estilizada**: Páginas de Login e Registro com cards centralizados, ícones nos inputs e feedback visual claro.
-*   **Dashboard Interativo**: Painel de boas-vindas com resumo do usuário e cards de status.
-*   **Edição de Perfil Avançada**:
-    *   Upload de Avatar com **Preview em Tempo Real** (sem recarregar a página).
-    *   Separação clara entre dados pessoais e alteração de senha.
-    *   Feedback de validação elegante.
-*   **Sistema de Notificações**: Alertas flutuantes (Toasts) para mensagens de sucesso e erro que desaparecem automaticamente.
+*   **Gestão de Clientes:** Cadastro completo, edição e listagem de clientes com busca e paginação.
+*   **Gestão de Processos:** Controle de processos jurídicos vinculados a clientes, com status, valores e número do processo (máscara CNJ).
+*   **Controle de Prazos:** Acompanhamento de datas importantes, audiências e entregas, com vínculo direto aos processos.
+*   **Dashboard Inteligente:**
+    *   **Métricas em Tempo Real:** Total de clientes, processos ativos e prazos pendentes.
+    *   **Próximos Prazos:** Lista dinâmica dos 5 prazos mais urgentes.
+    *   **Integração com Banco de Dados:** Utiliza Views e Stored Procedures para performance.
+*   **Segurança:**
+    *   **Autenticação:** Sistema de login seguro.
+    *   **Autorização por Policy:** Usuários acessam apenas seus próprios dados.
 
 ## 🛠️ Tecnologias Utilizadas
 
-*   **Framework**: [Laravel 10/11](https://laravel.com)
-*   **Frontend**: [Bootstrap 5.3](https://getbootstrap.com) (via CDN)
-*   **Ícones**: [Bootstrap Icons](https://icons.getbootstrap.com)
-*   **Templating**: Blade
-*   **Javascript**: Vanilla JS (para interações leves)
+*   **Backend:** PHP 8.2+, Laravel 10+
+*   **Frontend:** Blade Templates, Bootstrap 5.3 (CDN), Ícones Bootstrap
+*   **Banco de Dados:** MySQL / SQLite
+*   **Testes:** PHPUnit (Feature Tests completos)
+*   **Ferramentas:** Docker (opcional), Composer, NPM
+
+## 🏗️ Arquitetura do Projeto
+
+O projeto segue princípios de **Clean Code** e **SOLID**, organizado em camadas específicas para garantir manutenibilidade e testabilidade:
+
+*   **Models:** Representação das entidades do banco deados (`App\Models`).
+*   **DTOs (Data Transfer Objects):** Transferência de dados tipados entre camadas (`App\DTOs`).
+*   **Repositories:** Abstração da camada de dados (`App\Repositories`), utilizando paginação.
+*   **Actions:** Classes de responsabilidade única para regras de negócio (`App\Actions`).
+*   **Services:** Orquestração entre Repositories e Actions (`App\Services`).
+*   **Controllers:**  Responsáveis apenas por receber requisições e devolver respostas (`App\Http\Controllers`).
+*   **Policies:** Lógica de autorização (`App\Policies`).
+
+## 📦 Instalação e Configuração
+
+Siga os passos abaixo para rodar o projeto em sua máquina local:
+
+1.  **Clone o repositório:**
+    ```bash
+    git clone https://github.com/seu-usuario/legal-dashboard.git
+    cd legal-dashboard
+    ```
+
+2.  **Instale as dependências do PHP:**
+    ```bash
+    composer install
+    ```
+
+3.  **Instale as dependências do Frontend:**
+    ```bash
+    npm install
+    npm run build
+    ```
+
+4.  **Configure o ambiente:**
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
+    *   Configure as credenciais do seu banco de dados no arquivo `.env`.
+
+5.  **Execute as Migrations e Seeds:**
+    Este comando cria as tabelas, views, procedures, triggers e popula o banco com dados de teste.
+    ```bash
+    php artisan migrate:refresh --seed
+    ```
+
+6.  **Inicie o Servidor:**
+    ```bash
+    php artisan serve
+    ```
+    Acesse http://localhost:8000.
+
+## 👤 Login de Teste
+
+A execução do `db:seed` cria um usuário padrão para testes imediatos:
+
+*   **E-mail:** `advogado@example.com`
+*   **Senha:** `password`
+
+## ✅ Testes Automatizados
+
+O sistema possui uma suíte completa de testes de funcionalidade (Feature Tests) que cobrem todos os fluxos críticos. Para executar os testes:
+
+```bash
+php artisan test
+```
+
+Testes específicos incluem:
+*   `ClientFlowTest`: Fluxo completo de CRUD de clientes.
+*   `ProcessFlowTest`: Gestão de processos e vínculos.
+*   `DeadlineFlowTest`: Criação e atualização de prazos.
+*   `UserFlowTest`: Autenticação e perfil.
+
+## 📚 Documentação da API
+
+A aplicação também expõe uma API RESTful completa.
+
+*   **OpenAPI / Swagger:** A definição da API encontra-se em `docs/openapi.yaml`. Você pode visualizar este arquivo em qualquer editor Swagger.
+*   **Postman Collection:** Importe o arquivo `docs/postman_collection.json` no Postman para testar as requisições prontamente.
+
+## 💾 Funcionalidades de Banco de Dados
+
+O sistema utiliza recursos avançados de banco de dados (MySQL):
+*   **View (`v_client_summary`):** Agrega dados de processos e prazos por cliente.
+*   **Stored Procedure (`sp_get_dashboard_stats`):** Retorna contagens eficientes para o dashboard.
+*   **Trigger (`tr_touch_process_update`):** Atualiza automaticamente o `updated_at` do processo quando um prazo vinculado é alterado.
 
 ---
-
-## 🚀 Como Iniciar o Projeto
-
-Siga os passos abaixo para rodar o projeto localmente em sua máquina.
-
-### Pré-requisitos
-
-Certifique-se de ter instalado:
-*   [PHP >= 8.1](https://www.php.net/)
-*   [Composer](https://getcomposer.org/)
-*   [Node.js & NPM](https://nodejs.org/) (opcional, pois usamos CDN para estilos, mas útil para o ambiente Laravel)
-*   Banco de Dados (MySQL, SQLite, etc.)
-
-### 1. Clonar o Repositório
-
-```bash
-git clone https://github.com/seu-usuario/seu-repositorio.git
-cd seu-repositorio
-```
-
-### 2. Instalar Dependências do Backend
-
-```bash
-composer install
-```
-
-### 3. Configurar Ambiente
-
-Copie o arquivo de exemplo `.env.example` para `.env`:
-
-```bash
-cp .env.example .env
-```
-
-Gere a chave da aplicação:
-
-```bash
-php artisan key:generate
-```
-
-### 4. Configurar Banco de Dados
-
-Abra o arquivo `.env` e configure suas credenciais de banco de dados:
-
-```ini
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=nome_do_seu_banco
-DB_USERNAME=seu_usuario
-DB_PASSWORD=sua_senha
-```
-
-### 5. Configurar Link Simbólico (Importante para Imagens)
-
-Para que o upload de avatares funcione corretamente e as imagens sejam acessíveis publicamente, execute:
-
-```bash
-php artisan storage:link
-```
-
-### 6. Rodar Migrations
-
-Crie as tabelas no banco de dados:
-
-```bash
-php artisan migrate
-```
-
-### 7. Iniciar o Servidor
-
-Agora basta iniciar o servidor de desenvolvimento do Laravel:
-
-```bash
-php artisan serve
-```
-
-Acesse o projeto em: `http://localhost:8000`
-
----
-
-## 📂 Estrutura de Arquivos Relevante
-
-Abaixo estão os principais arquivos modificados para o novo design:
-
-*   `resources/views/layouts/app.blade.php`: Layout mestre com Navbar fixa e importação do Bootstrap.
-*   `resources/views/auth/login.blade.php`: Tela de login customizada.
-*   `resources/views/auth/register.blade.php`: Tela de registro customizada.
-*   `resources/views/dashboard.blade.php`: Painel principal do usuário.
-*   `resources/views/profile/edit.blade.php`: Formulário de edição de perfil com preview de imagem.
-
-## 📝 Notas Adicionais
-
-*   **Customização CSS**: Todo o CSS personalizado (fontes, cores, sombras) está inline no `<head>` do `layouts/app.blade.php` para facilitar a portabilidade neste desafio. Em um projeto maior, recomenda-se mover para um arquivo `app.css` separado compilado via Vite.
-*   **Avatares**: Se o usuário não tiver um avatar, é gerado um avatar automático com as iniciais usando a API `ui-avatars.com`.
-
----
-
-Desenvolvido com ❤️ e Laravel.
+Desenvolvido como parte do Deep Challenge.

@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'LegalPro') }}</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Bootstrap 5 CSS -->
+    <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Bootstrap Icons -->
@@ -19,250 +19,208 @@
 
     <style>
         :root {
-            --primary-color: #4f46e5;
-            /* Indigo 600 */
-            --primary-hover: #4338ca;
-            /* Indigo 700 */
-            --bg-color: #f8fafc;
-            /* Slate 50 */
-            --text-main: #1e293b;
-            /* Slate 800 */
-            --text-muted: #64748b;
-            /* Slate 500 */
+            --sidebar-width: 280px;
+            --primary-color: #2c3e50;
+            /* Legal Navy */
+            --secondary-color: #34495e;
+            --accent-color: #e67e22;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            -webkit-font-smoothing: antialiased;
+            background-color: #f8f9fa;
         }
 
-        /* Navbar Styling */
-        .navbar {
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        #wrapper {
+            display: flex;
+            width: 100%;
+            align-items: stretch;
         }
 
-        .navbar-brand {
-            font-weight: 700;
-            color: var(--primary-color) !important;
-            letter-spacing: -0.5px;
+        #sidebar {
+            min-width: var(--sidebar-width);
+            max-width: var(--sidebar-width);
+            background: var(--primary-color);
+            color: #fff;
+            transition: all 0.3s;
+            min-height: 100vh;
         }
 
-        .nav-link {
-            font-weight: 500;
-            color: var(--text-muted);
-            transition: color 0.15s ease-in-out;
+        #sidebar .sidebar-header {
+            padding: 20px;
+            background: var(--secondary-color);
         }
 
-        .nav-link:hover,
-        .nav-link.active {
-            color: var(--primary-color);
+        #sidebar ul.components {
+            padding: 20px 0;
+            border-bottom: 1px solid #47748b;
         }
 
-        /* Cards & Components */
+        #sidebar ul p {
+            color: #fff;
+            padding: 10px;
+        }
+
+        #sidebar ul li a {
+            padding: 15px 20px;
+            font-size: 1.1em;
+            display: block;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        #sidebar ul li a:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+            padding-left: 30px;
+        }
+
+        #sidebar ul li.active>a {
+            color: #fff;
+            background: var(--accent-color);
+        }
+
+        #content {
+            width: 100%;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
         .card {
             border: none;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            border-radius: 1rem;
-            /* rounded-4 equivalent approx */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
         }
 
-        .shadow-sm-soft {
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.03);
+        .card:hover {
+            transform: translateY(-2px);
         }
 
-        /* Forms */
-        .form-control {
-            border-radius: 0.5rem;
-            border: 1px solid #e2e8f0;
-            padding: 0.75rem 1rem;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
-        }
-
-        .input-group-text {
-            background-color: #f8fafc;
-            border-color: #e2e8f0;
-            color: var(--text-muted);
-        }
-
-        /* Buttons */
-        .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            padding: 0.625rem 1.25rem;
-            font-weight: 500;
-            border-radius: 0.5rem;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-hover);
-            border-color: var(--primary-hover);
-        }
-
-        /* Alerts */
-        .alert-floating {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            z-index: 1050;
-            min-width: 300px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        /* Utility */
-        .text-primary {
-            color: var(--primary-color) !important;
-        }
-
-        .bg-gradient-primary {
-            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        .avatar-preview {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #dee2e6;
         }
     </style>
 </head>
 
 <body>
-    <div id="app">
-        <!-- Navigation -->
-        <nav class="navbar navbar-expand-md navbar-light fixed-top shadow-sm">
-            <div class="container">
-                <a class="navbar-brand fs-4" href="{{ url('/') }}">
-                    {{ config('app.name', 'App') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-                        @auth
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
-                                    href="{{ route('dashboard') }}">Dashboard</a>
-                            </li>
-                        @endauth
-                    </ul>
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3><i class="bi bi-scale-bank me-2"></i>LegalPro</h3>
+            </div>
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
+            <ul class="list-unstyled components">
+                <li class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard') }}">
+                        <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('processes.*') ? 'active' : '' }}">
+                    <a href="{{ route('processes.index') }}">
+                        <i class="bi bi-file-earmark-text me-2"></i> Processos
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('clients.*') ? 'active' : '' }}">
+                    <a href="{{ route('clients.index') }}">
+                        <i class="bi bi-people me-2"></i> Clientes
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('deadlines.*') ? 'active' : '' }}">
+                    <a href="{{ route('deadlines.index') }}">
+                        <i class="bi bi-calendar-event me-2"></i> Prazos
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('profile.edit') ? 'active' : '' }}">
+                    <a href="{{ route('profile.edit') }}">
+                        <i class="bi bi-person-circle me-2"></i> Perfil
+                    </a>
+                </li>
+            </ul>
 
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle d-flex align-items-center gap-2"
-                                    href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false" v-pre>
-                            @if(Auth::user()->profile_image)
-                                        <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="{{ Auth::user()->name }}" class="rounded-circle" width="32" height="32" style="object-fit: cover;">
-                                    @else
-                                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; font-size: 14px;">
-                                            {{ substr(Auth::user()->name, 0, 1) }}
-                                        </div>
-                                    @endif
-                                    <span>{{ Auth::user()->name }}</span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end border-0 shadow-sm-soft"
-                                    aria-labelledby="navbarDropdown">
-                                    <h6 class="dropdown-header text-muted">Manage Account</h6>
-                                    <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                                        <i class="bi bi-person me-2"></i> {{ __('Profile') }}
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item text-danger" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        <i class="bi bi-box-arrow-right me-2"></i> {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
+            <div class="p-3 mt-auto">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-outline-light w-100">
+                        <i class="bi bi-box-arrow-left me-2"></i> Sair
+                    </button>
+                </form>
             </div>
         </nav>
 
-        <!-- Main Content -->
-        <main class="py-4 mt-5">
-            <div class="container mt-4">
-                <!-- Validation Errors / Success Messages -->
-                @if (session('success'))
-                    <div class="alert alert-success alert-dismissible fade show alert-floating border-0 rounded-3"
-                        role="alert">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="bi bi-check-circle-fill"></i>
-                            <div>{{ session('success') }}</div>
+        <!-- Page Content -->
+        <div id="content">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light rounded shadow-sm mb-4">
+                <div class="container-fluid">
+                    <button type="button" id="sidebarCollapse" class="btn btn-outline-secondary d-md-none">
+                        <i class="bi bi-list"></i>
+                    </button>
+
+                    <div class="d-flex w-100 justify-content-end align-items-center">
+                        <div class="dropdown">
+                            <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                                id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                @if(Auth::user()->profile_image)
+                                    <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="mdo" width="32"
+                                        height="32" class="rounded-circle me-2" style="object-fit: cover;">
+                                @else
+                                    <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-2"
+                                        style="width: 32px; height: 32px;">
+                                        {{ substr(Auth::user()->name, 0, 1) }}
+                                    </div>
+                                @endif
+                                <strong>{{ Auth::user()->name }}</strong>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end text-small shadow"
+                                aria-labelledby="dropdownUser1">
+                                <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Perfil</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item">Sair</button>
+                                    </form>
+                                </li>
+                            </ul>
                         </div>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container-fluid">
+                <!-- Flash Messages -->
+                @if (session('status'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('status') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
-
-                @if (session('status'))
-                    <div class="alert alert-info alert-dismissible fade show alert-floating border-0 rounded-3"
-                        role="alert">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="bi bi-info-circle-fill"></i>
-                            <div>{{ session('status') }}</div>
-                        </div>
+                @if ($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
 
                 @yield('content')
             </div>
-        </main>
+        </div>
     </div>
 
-    <!-- Bootstrap 5 JS Bundle -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Custom Scripts -->
-    <script>
-        // Auto-dismiss alerts after 5 seconds
-        document.addEventListener('DOMContentLoaded', function () {
-            setTimeout(function () {
-                var alerts = document.querySelectorAll('.alert-dismissible');
-                alerts.forEach(function (alert) {
-                    var bsAlert = new bootstrap.Alert(alert);
-                    bsAlert.close();
-                });
-            }, 5000);
-        });
-    </script>
     @stack('scripts')
 </body>
 

@@ -25,31 +25,13 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(ProfileUpdateRequest $request, \App\Services\UserService $userService): RedirectResponse
     {
-        $user = $request->user();
         $validated = $request->validated();
 
-        // Handle profile image upload
-        if ($request->hasFile('profile_image')) {
-            // Delete old image if exists
-            if ($user->profile_image) {
-                Storage::disk('public')->delete($user->profile_image);
-            }
-            $path = $request->file('profile_image')->store('profiles', 'public');
-            $validated['profile_image'] = $path;
-        }
+        $dto = \App\DTOs\UserDTO::fromRequest($validated, $request->file('profile_image'));
 
-        // Only update password if provided
-        if (empty($validated['password'])) {
-            unset($validated['password']);
-        }
-
-        $user->fill($validated);
-
-
-
-        $user->save();
+        $userService->updateUser($request->user(), $dto);
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }

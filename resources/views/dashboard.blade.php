@@ -1,79 +1,91 @@
 @extends('layouts.app')
 
 @section('content')
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="mb-0">Painel de Controle</h2>
+            <p class="text-muted">Bem-vindo ao seu escritório virtual.</p>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <!-- Processos Card -->
+        <div class="col-md-4">
+            <div class="card bg-primary text-white p-3 rounded-4 shadow-sm border-0 h-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0 fw-light">Processos Ativos</h5>
+                        <h2 class="fw-bold display-6 mb-0">{{ $counts['processes'] }}</h2>
+                    </div>
+                    <i class="bi bi-file-earmark-text display-4 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prazos Card -->
+        <div class="col-md-4">
+            <div class="card bg-success text-white p-3 rounded-4 shadow-sm border-0 h-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0 fw-light">Prazos Pendentes</h5>
+                        <h2 class="fw-bold display-6 mb-0">{{ $counts['deadlines'] }}</h2>
+                    </div>
+                    <i class="bi bi-calendar-check display-4 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clientes Card -->
+        <div class="col-md-4">
+            <div class="card bg-info text-white p-3 rounded-4 shadow-sm border-0 h-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0 fw-light">Total de Clientes</h5>
+                        <h2 class="fw-bold display-6 mb-0">{{ $counts['clients'] }}</h2>
+                    </div>
+                    <i class="bi bi-people display-4 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
-        <div class="col-md-12 mb-4">
-            <div class="card shadow-sm-soft border-0 rounded-4 overflow-hidden">
-                <div class="card-body p-0">
-                    <div class="bg-primary bg-gradient text-white p-5">
-                        <div class="d-flex align-items-center gap-4">
-                            <div class="position-relative">
-                                @if(Auth::user()->profile_image)
-                                    <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="Profile"
-                                        class="rounded-circle border border-4 border-white shadow-sm" width="100" height="100"
-                                        style="object-fit: cover;">
-                                @else
-                                    <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center shadow-sm"
-                                        style="width: 100px; height: 100px; font-size: 2.5rem; border: 4px solid rgba(255,255,255,0.2);">
-                                        {{ substr(Auth::user()->name, 0, 1) }}
-                                    </div>
-                                @endif
+        <!-- Upcoming Deadlines -->
+        <div class="col-md-12">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white py-3 border-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 fw-bold text-dark">Prazos Próximos</h5>
+                        <a href="{{ route('deadlines.index') }}" class="btn btn-sm btn-link text-decoration-none">Ver todos</a>
+                    </div>
+                </div>
+                <div class="list-group list-group-flush rounded-bottom-4">
+                    @forelse($upcomingDeadlines as $deadline)
+                        <div class="list-group-item px-4 py-3 d-flex align-items-center justify-content-between border-light">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-light rounded p-2 me-3 text-primary">
+                                    <i class="bi bi-calendar-event h5 mb-0"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 fw-semibold text-dark">{{ $deadline->title }}</h6>
+                                    <small class="text-muted">
+                                        {{ $deadline->due_date->format('d/m/Y H:i') }}
+                                        @if($deadline->process)
+                                            <span class="mx-1">•</span> <i class="bi bi-file-earmark-text small"></i> {{ $deadline->process->title }}
+                                        @endif
+                                    </small>
+                                </div>
                             </div>
-                            <div>
-                                <h2 class="fw-bold mb-1">Welcome back, {{ Auth::user()->name }}!</h2>
-                                <p class="mb-0 text-white-50">It's great to see you again. Here's what's happening with your
-                                    account.</p>
-                            </div>
+                            <span class="badge {{ $deadline->due_date->isPast() ? 'bg-danger-subtle text-danger' : 'bg-warning-subtle text-warning-emphasis' }} rounded-pill px-3 py-2">
+                                {{ $deadline->due_date->diffForHumans() }}
+                            </span>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm border-0 rounded-4 h-100">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="bg-light p-3 rounded-circle text-primary">
-                            <i class="bi bi-person-lines-fill fs-4"></i>
+                    @empty
+                        <div class="text-center py-5 text-muted">
+                            <i class="bi bi-calendar-check display-4 mb-3 d-block text-secondary opacity-50"></i>
+                            <p class="mb-0">Nenhum prazo próximo.</p>
                         </div>
-                        <h5 class="fw-bold mb-0">Profile Status</h5>
-                    </div>
-                    <p class="text-muted small">Your profile information serves as your digital identity. Keep it updated to
-                        ensure accuracy.</p>
-                    <a href="{{ route('profile.edit') }}" class="btn btn-outline-primary w-100 rounded-3">Manage Profile</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm border-0 rounded-4 h-100">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="bg-light p-3 rounded-circle text-success">
-                            <i class="bi bi-shield-check fs-4"></i>
-                        </div>
-                        <h5 class="fw-bold mb-0">Security</h5>
-                    </div>
-                    <p class="text-muted small">Your account is secured with a password. make sure to update it regularly
-                        for better safety.</p>
-                    <button class="btn btn-outline-success w-100 rounded-3" disabled>Secure</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm border-0 rounded-4 h-100">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="bg-light p-3 rounded-circle text-info">
-                            <i class="bi bi-activity fs-4"></i>
-                        </div>
-                        <h5 class="fw-bold mb-0">Activity</h5>
-                    </div>
-                    <p class="text-muted small">Check your recent login activity and session history to monitor your account
-                        usage.</p>
-                    <button class="btn btn-outline-info w-100 rounded-3" disabled>View Logs</button>
+                    @endforelse
                 </div>
             </div>
         </div>

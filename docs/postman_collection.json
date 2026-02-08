@@ -1,61 +1,45 @@
 {
 	"info": {
-		"_postman_id": "f5a3c3a4-1234-5678-9abc-def123456789",
-		"name": "Laravel Deep Challenge",
-		"description": "Collection for testing backend profile logic.",
+		"_postman_id": "9a613274-1234-4567-8901-abcdef123456",
+		"name": "Legal Dashboard API",
+		"description": "Coleção de API para o Painel Jurídico.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Auth",
+			"name": "Clients",
 			"item": [
 				{
-					"name": "Login",
+					"name": "List Clients",
 					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
+						"method": "GET",
+						"header": [],
 						"url": {
-							"raw": "{{base_url}}/login",
+							"raw": "{{base_url}}/clients?page=1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"login"
+								"clients"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number for pagination"
+								}
 							]
-						},
-						"description": "Login to get session cookie."
-					},
-					"response": []
+						}
+					}
 				},
 				{
-					"name": "Register",
+					"name": "Create Client",
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"test@example.com\",\n    \"password\": \"password\",\n    \"password_confirmation\": \"password\"\n}",
+							"raw": "{\n    \"name\": \"Fulano de Tal\",\n    \"email\": \"fulano@exemplo.com\",\n    \"phone\": \"11999999999\",\n    \"document\": \"123.456.789-00\",\n    \"address\": \"Rua Exemplo, 123\",\n    \"notes\": \"Notas sobre o cliente\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -63,99 +47,95 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/register",
+							"raw": "{{base_url}}/clients",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"register"
+								"clients"
 							]
+						}
+					}
+				},
+				{
+					"name": "Update Client",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Fulano de Tal Atualizado\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
-						"description": "Register a new user."
-					},
-					"response": []
+						"url": {
+							"raw": "{{base_url}}/clients/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Client",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/clients/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients",
+								"1"
+							]
+						}
+					}
 				}
 			]
 		},
 		{
-			"name": "Profile",
+			"name": "Processes",
 			"item": [
 				{
-					"name": "Update Profile",
+					"name": "List Processes",
 					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "name",
-									"value": "New Name",
-									"type": "text"
-								},
-								{
-									"key": "email",
-									"value": "newemail@example.com",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "password",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "password_confirmation",
-									"value": "password",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "profile_image",
-									"type": "file",
-									"src": []
-								},
-								{
-									"key": "_method",
-									"value": "PATCH",
-									"type": "text",
-									"description": "Laravel mocks PUT/PATCH via POST if needed, but modern clients support PATCH natively."
-								}
-							]
-						},
+						"method": "GET",
+						"header": [],
 						"url": {
-							"raw": "{{base_url}}/profile",
+							"raw": "{{base_url}}/processes?page=1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"profile"
+								"processes"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number for pagination"
+								}
 							]
-						},
-						"description": "Updates user profile information."
-					},
-					"response": []
+						}
+					}
 				},
 				{
-					"name": "Delete Account",
+					"name": "Create Process",
 					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
+						"method": "POST",
+						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"password\": \"password\"\n}",
+							"raw": "{\n    \"client_id\": 1,\n    \"number\": \"1234567-89.2024.8.26.0000\",\n    \"title\": \"Processo Trabalhista\",\n    \"description\": \"Reclamação trabalhista\",\n    \"court\": \"TRT-2\",\n    \"status\": \"Em Andamento\",\n    \"value\": 50000.00\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -163,25 +143,137 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/profile",
+							"raw": "{{base_url}}/processes",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"profile"
+								"processes"
 							]
+						}
+					}
+				},
+				{
+					"name": "Update Process",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"Concluído\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
-						"description": "Delete the user account."
-					},
-					"response": []
+						"url": {
+							"raw": "{{base_url}}/processes/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"processes",
+								"1"
+							]
+						}
+					}
 				}
 			]
+		},
+		{
+			"name": "Deadlines",
+			"item": [
+				{
+					"name": "List Deadlines",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/deadlines?page=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"deadlines"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number for pagination"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Deadline",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"process_id\": 1,\n    \"title\": \"Audiência\",\n    \"description\": \"Audiência de instrução\",\n    \"due_date\": \"2026-03-15 14:00:00\",\n    \"status\": \"Pendente\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/deadlines",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"deadlines"
+							]
+						}
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{auth_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"variable": [
 		{
 			"key": "base_url",
 			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
 			"type": "string"
 		}
 	]
